@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   minitalk_bonus.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yobourai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yobourai <yobourai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 21:30:19 by yobourai          #+#    #+#             */
-/*   Updated: 2024/09/04 21:30:22 by yobourai         ###   ########.fr       */
+/*   Updated: 2024/09/05 22:09:04 by yobourai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#ifndef MINITALK_BONUS_H
+# define MINITALK_BONUS_H
 
 # include <unistd.h>
 # include <signal.h>
@@ -26,5 +26,6 @@ void	ft_send_signal(char *pid, char *s);
 void	ft_handler(int sig, siginfo_t *info, void *context);
 int		ft_power(unsigned int a, unsigned int b);
 int		ascii(char *str);
+void	ft_putchar(char c);
 
 #endif

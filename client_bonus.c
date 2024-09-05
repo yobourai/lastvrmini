@@ -1,86 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yobourai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yobourai <yobourai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 21:29:35 by yobourai          #+#    #+#             */
-/*   Updated: 2024/09/04 21:59:44 by yobourai         ###   ########.fr       */
+/*   Updated: 2024/09/05 22:08:40 by yobourai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
-
-int	ft_strlen(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
-int	ft_atoi(char *str)
-{
-	int	i;
-	int	res;
-	int	sign;
-
-	i = 0;
-	res = 0;
-	sign = 1;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		i++;
-	if (str[i] == 45)
-	{
-		sign = sign * (-1);
-		i++;
-	}
-	else if (str[i] == 43)
-		i++;
-	while (str[i] >= 48 && str[i] <= 57)
-	{
-		res = res * 10 + str[i] - 48;
-		i++;
-	}
-	return (res * sign);
-}
-
-void	ft_putstr(char *str)
-{
-	unsigned int	i;
-	unsigned int	l;
-
-	if (!str)
-		return ;
-	l = ft_strlen(str);
-	i = 0;
-	while (i < l)
-	{
-		write(1, &str[i], sizeof(str[i]));
-		i++;
-	}
-}
-
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
-void	ft_putnbr(int n)
-{
-	if (n < 0)
-	{
-		write(1, "-", 1);
-		n *= -1;
-	}
-	if (n > 9)
-		ft_putnbr(n / 10);
-	ft_putchar((n % 10) + '0');
-}
-#include <stdio.h>
+#include "minitalk_bonus.h"
 
 char	*ft_bin(int a)
 {
@@ -120,25 +50,28 @@ void	ft_send_signal(char *pid, char *s)
 	}
 }
 
+void	ft_hand(int sig)
+{
+	if (sig == SIGUSR1)
+		exit(1);
+}
+
 int	main(int argc, char *argv[])
 {
-	int		i;
+	int				i;
 	unsigned char	*str;
 
-	str = (unsigned char*)*(argv + 2);
-	if (argc != 3)
+	str = (unsigned char *)*(argv + 2);
+	signal(SIGUSR1, ft_hand);
+	if (argc != 3 || !*argv[2])
 	{
 		ft_putstr("<./client> <PID> <Message> \n");
 		exit(1);
 	}
 	i = 0;
-	if(ft_atoi(argv[1]) <= 10)
+	if (ft_atoi(argv[1]) <= 10 || kill(ft_atoi(argv[1]), SIGUSR1) == -1)
 	{
-		printf("pid error");
-		exit(1);
-	}
-	if(kill(ft_atoi(argv[1]), SIGUSR1)== -1)
-	{	ft_putstr("pid incorrect\n");
+		ft_putstr("pid error");
 		exit(1);
 	}
 	while (str[i] != '\0')
@@ -146,5 +79,6 @@ int	main(int argc, char *argv[])
 		ft_send_signal(argv[1], ft_bin(str[i]));
 		i++;
 	}
+	ft_putstr("message has been saved successfuly\n");
 	return (0);
 }
