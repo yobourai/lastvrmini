@@ -6,7 +6,7 @@
 /*   By: yobourai <yobourai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 21:29:35 by yobourai          #+#    #+#             */
-/*   Updated: 2024/09/05 22:07:20 by yobourai         ###   ########.fr       */
+/*   Updated: 2024/09/06 01:34:28 by yobourai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc, char *argv[])
 	i = 0;
 	if (ft_atoi(argv[1]) <= 10 || kill(ft_atoi(argv[1]), SIGUSR1) == -1)
 	{
-		ft_putstr("pid error");
+		ft_putstr("pid error\n");
 		exit(1);
 	}
 	while (argv[2][i] != '\0')
@@ -79,6 +79,7 @@ int	main(int argc, char *argv[])
 		ft_send_signal(argv[1], ft_bin(argv[2][i]));
 		i++;
 	}
-	ft_putstr("message has been saved successfuly\n");
+	if (!argv[2][i])
+		ft_putstr("message has been saved successfuly\n");
 	return (0);
 }

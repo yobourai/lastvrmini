@@ -1,26 +1,47 @@
-NAME = minitalk.a
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-SRC =	client.c server.c minitalk_utils.c \
+RM = rm -rf
 
-OBJ = $(SRC:%.c=%.o)
-BONUSSRC = client_bonus.c server_bonus.c minitalk_utils_bonus.c \
-OBJ = $(SRC:%.c=%.o)
+UTILS_FILE =  minitalk_utils.c
+UTILS_OBJS = $(UTILS_FILE:.c=.o)
+UTILS_BONUS_FILE = minitalk_utils_bonus.c
+UTILS_BONUS_OBJS = $(UTILS_BONUS_FILE:.c=.o)
 
-OBJBONUS = $(BONUSSRC:%.c=%.o)
+SERVER_FILE = server.c
+SERVER_OBJS = $(SERVER_FILE:.c=.o)
+CLIENT_FILE = client.c
+CLIENT_OBJS = $(CLIENT_FILE:.c=.o)
 
-$(NAME) : $(OBJ)
-		ar rc $(NAME) $(OBJ)
+SERVER_BONUS_FILE = server_bonus.c
+SERVER_BONUS_OBJS = $(SERVER_BONUS_FILE:.c=.o)
+CLIENT_BONUS_FILE =	client_bonus.c
+CLIENT_BONUS_OBJS = $(CLIENT_BONUS_FILE:.c=.o)
 
-all : $(NAME) bonus
+SERVER = server
+CLIENT = client
 
-bonus : $(OBJBONUS)
-		ar rc $(NAME) $(OBJBONUS)
+SERVER_BONUS = server_bonus
+CLIENT_BONUS = client_bonus
 
-clean :
-		@rm -rf $(OBJBONUS) $(OBJ)
+all: $(SERVER) $(CLIENT)
 
-fclean :
-		@rm -f $(NAME) $(OBJBONUS) $(OBJ)
+$(SERVER): $(SERVER_OBJS) $(UTILS_OBJS)
+	$(CC) $(CFLAGS) $(SERVER_OBJS) $(UTILS_OBJS) -o $(SERVER)
+$(CLIENT): $(CLIENT_OBJS)
+	$(CC) $(CFLAGS) $(CLIENT_OBJS) $(UTILS_OBJS) -o $(CLIENT)
 
-re : fclean all
+bonus: $(SERVER_BONUS) $(CLIENT_BONUS)
+
+$(SERVER_BONUS): $(SERVER_BONUS_OBJS) $(UTILS_BONUS_OBJS)
+	$(CC) $(CFLAGS) $(SERVER_BONUS_OBJS) $(UTILS_BONUS_OBJS) -o $(SERVER_BONUS)
+$(CLIENT_BONUS): $(CLIENT_BONUS_OBJS) $(UTILS_BONUS_OBJS)
+	$(CC) $(CFLAGS) $(CLIENT_BONUS_OBJS) $(UTILS_BONUS_OBJS) -o $(CLIENT_BONUS)
+
+
+clean:
+	$(RM) $(SERVER_OBJS) $(CLIENT_OBJS) $(UTILS_OBJS)
+	$(RM) $(SERVER_BONUS_OBJS) $(CLIENT_BONUS_OBJS) $(UTILS_BONUS_OBJS)
+fclean: clean
+	$(RM) $(SERVER) $(CLIENT)
+	$(RM) $(SERVER_BONUS) $(CLIENT_BONUS)
+re: fclean all

@@ -6,7 +6,7 @@
 /*   By: yobourai <yobourai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 21:29:35 by yobourai          #+#    #+#             */
-/*   Updated: 2024/09/05 22:08:40 by yobourai         ###   ########.fr       */
+/*   Updated: 2024/09/06 01:34:42 by yobourai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	main(int argc, char *argv[])
 		ft_send_signal(argv[1], ft_bin(str[i]));
 		i++;
 	}
-	ft_putstr("message has been saved successfuly\n");
+	if (!argv[2][i])
+		ft_putstr("message has been saved successfuly\n");
 	return (0);
 }
